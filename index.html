@@ -1,14 +1,58 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
-</head>
-<body>
+  </head>
+  <body>
     <div>
-        <input type="file" capture="user">
-        <input type="file" capture="environment">
+      <input
+        type="file"
+        capture="user"
+        accept="image/*"
+        onchange="handleFileSelect(this)"
+      />
+      <input
+        type="file"
+        capture="environment"
+        accept="image/*"
+        onchange="handleFileSelect(this)"
+      />
     </div>
-</body>
+
+    <script>
+      function handleFileSelect(input) {
+        const file = input.files[0];
+
+        if (file) {
+          const reader = new FileReader();
+
+          reader.onloadend = function () {
+            // Create an image element and set its source to the captured image data
+            const img = new Image();
+            img.src = reader.result;
+
+            // Create a link element to trigger the download
+            const downloadLink = document.createElement("a");
+            downloadLink.href = reader.result;
+            downloadLink.download = "captured_image.jpg";
+
+            // Append the image and link to the body
+            document.body.appendChild(img);
+            document.body.appendChild(downloadLink);
+
+            // Trigger a click on the link to download the image
+            downloadLink.click();
+
+            // Remove the elements from the DOM
+            document.body.removeChild(img);
+            document.body.removeChild(downloadLink);
+          };
+
+          reader.readAsDataURL(file);
+        }
+      }
+    </script>
+  </body>
 </html>
