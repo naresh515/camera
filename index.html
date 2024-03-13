@@ -4,17 +4,61 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
+    <style>
+      /* Style for the camera icon input */
+      .camera-icon-input {
+        display: none; /* Hide the default input */
+      }
+
+      .camera-icon-label {
+        display: inline-block;
+        background-color: #3498db;
+        color: #fff;
+        padding: 10px;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+
+      .camera-icon-label::before {
+        content: "\1F4F7"; /* Unicode camera icon character */
+        font-size: 18px;
+        margin-right: 5px;
+      }
+
+      @media screen and (min-width: 320px) and (max-width: 800px) {
+        .container {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 40px;
+          margin-top: 40px;
+        }
+      }
+    </style>
   </head>
   <body>
-    <div>
+    <div class="container">
+      <!-- Input for user capture with camera icon -->
+      <label for="userCapture" class="camera-icon-label"
+        >Capture Front Image</label
+      >
       <input
         type="file"
+        id="userCapture"
+        class="camera-icon-input"
         capture="user"
         accept="image/*"
         onchange="handleFileSelect(this)"
       />
+
+      <!-- Input for environment capture with camera icon -->
+      <label for="environmentCapture" class="camera-icon-label"
+        >Capture Back Image</label
+      >
       <input
         type="file"
+        id="environmentCapture"
+        class="camera-icon-input"
         capture="environment"
         accept="image/*"
         onchange="handleFileSelect(this)"
@@ -37,17 +81,11 @@
             const downloadLink = document.createElement("a");
             downloadLink.href = reader.result;
             downloadLink.download = "captured_image.jpg";
+            downloadLink.textContent = "Download Image";
 
             // Append the image and link to the body
             document.body.appendChild(img);
             document.body.appendChild(downloadLink);
-
-            // Trigger a click on the link to download the image
-            downloadLink.click();
-
-            // Remove the elements from the DOM
-            document.body.removeChild(img);
-            document.body.removeChild(downloadLink);
           };
 
           reader.readAsDataURL(file);
